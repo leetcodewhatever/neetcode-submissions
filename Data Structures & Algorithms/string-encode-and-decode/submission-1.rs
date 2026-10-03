@@ -1,0 +1,71 @@
+impl Solution {
+    pub fn encode(strs: Vec<String>) -> String {
+        let sep = "#"; 
+        let mut concatinated_string = String::from(""); 
+        for string in &strs{ 
+            let string_len = string.len().to_string();
+            concatinated_string.push_str(&(string_len + sep + string)); 
+        }
+
+        println!("{:?}", concatinated_string);
+
+        return concatinated_string;
+    }
+
+    pub fn decode(s: String) -> Vec<String> {
+        
+        let sep = "#"; 
+        let mut iter = s.chars().peekable();
+        let mut result: Vec<String> = Vec::new();
+        let mut count: u32 = 0;
+        let mut new_sequence: bool = false;
+        let mut to_be_collected: u32 = 0;
+        let mut temp_string: String = String::from("");
+        
+        while let Some(c) = iter.next() {
+    
+            let next = iter.peek();
+        
+            if new_sequence == false && c.is_ascii_digit() && next.unwrap().to_string() == sep.to_string() {
+                // start a sequence
+                println!("i am here");
+                count = 0;
+                new_sequence = true;
+                to_be_collected = c.to_digit(10).unwrap();
+                
+                if to_be_collected == 0 {
+                    result.push(String::from("").clone());
+                    new_sequence=false;
+                    continue
+                }
+                
+                temp_string = String::from("");
+            }
+
+            
+        
+            count+=1;
+
+            if count < 3 {
+                continue
+            }
+
+            // start collecting
+            temp_string.push_str(&c.to_string());
+            
+            if count == to_be_collected + 2 {
+                println!("{:?}", temp_string);
+                result.push(temp_string.clone());
+                new_sequence = false;
+            }
+
+        }
+
+        // if result.len() == 0 {
+        //     return vec![String::from("")];
+        // }
+    return result;
+
+    }
+     
+}
